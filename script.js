@@ -7,8 +7,14 @@ const time = document.getElementById("time");
 const timer = document.getElementById("timer");
 
 let timeLeft = Number(time.value);
+let timeStart = Number(time.value);
+let timeUsed=0;
 let started=false;
 let mistakes=0;
+let wpm=0;
+let accuracy=0;
+
+const results = document.getElementById("results");
 
 for(let i=0;i<letters.length;i++){
     const span = document.createElement("span");
@@ -22,21 +28,27 @@ spans[index].classList.add("current");
 let timerInterval;
 
 document.addEventListener("keydown",function(event){
-    if(!started){
+    
+
+    if(/^[a-zA-Z]$/.test(event.key) || event.key===" " || event.key==="."){
+        if(!started){
         timerInterval=setInterval(() => {
             timeLeft--;
             timer.textContent = "Timer: " + timeLeft;
 
             if(timeLeft ===0){
                 clearInterval(timerInterval);
-                alert("Time's up! Mistakes: "+ mistakes);
+                timeUsed= timeStart -timeLeft;
+                wpm = (index/5) /(timeUsed/60);
+                accuracy = index/(index +mistakes)* 100;
+                results.style.display="flex"
+                results.innerHTML= "Time's up! Mistakes: "+ mistakes +"<br>WPM: "+ Math.round(wpm) + "<br>Accuracy: "+ Math.round(accuracy) +" %";
             }
 
         },1000);
         started=true;
     }
 
-    if(/^[a-zA-Z]$/.test(event.key) || event.key===" " || event.key==="."){
         if(event.key ===letters[index]){
 
             spans[index].style.color="green";
@@ -48,7 +60,11 @@ document.addEventListener("keydown",function(event){
             }
             if(index===letters.length){
                 clearInterval(timerInterval)
-                alert("Finished! Mistakes: "+mistakes);
+                timeUsed= timeStart -timeLeft;
+                wpm = (index/5) /(timeUsed/60);
+                accuracy = index/(index +mistakes)* 100;
+                results.style.display="flex"
+                results.innerHTML="Finished! Mistakes: "+mistakes +"<br>WPM: "+ Math.round(wpm) + "<br>Accuracy: "+ Math.round(accuracy) +" %";
             }
         }else{
             spans[index].style.color="red";
@@ -73,6 +89,8 @@ newTest.addEventListener("click",function(){
 
     spans[index].classList.add("current");
     timer.textContent ="Time: "+ timeLeft;
+
+    results.style.display="none";
 })
 
 

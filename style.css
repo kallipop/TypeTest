@@ -89,7 +89,7 @@ p{
     flex-direction: column;
     align-items: center;
     background-color: white;
-    width: 600px;
+    width: 700px;
     height: 500px;
     margin: 0 auto;
     border:3px solid  black;
@@ -103,5 +103,4 @@ p{
     background-color: rgb(159, 117, 198);
     border-radius: 3px;
     color: white;
-    padding: 2px;
 }
